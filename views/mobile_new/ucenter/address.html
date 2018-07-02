@@ -1,0 +1,32 @@
+<div id="pageInfo" data-title="地址管理"></div>
+
+<div id="main">
+	<ul class="address-list">
+		{foreach:items=$this->address}
+        <li {if:$item['is_default']==1}class="curr"{/if} link="{url:/ucenter/address_default/id/$item[id]/is_default/1}">
+            <p>收货人：{$item['accept_name']}&nbsp;&nbsp;{$item['mobile']}</p>
+            <p class="order-add1">收货地址：{$this->areas[$item['province']]} {$this->areas[$item['city']]} {$this->areas[$item['area']]} {$item['address']}</p>
+            <span class="line"></span>
+            <div class="address-cz">
+            	{if:$item['is_default']==1}
+            	<label class="am-radio am-warning">
+                    <input type="radio" onclick="evalUrl('{url:/ucenter/address_default/id/$item[id]/is_default/0}')" name="radio3" value="" data-am-ucheck checked>取消默认
+                </label>
+				{else:}
+				<label class="am-radio am-warning">
+                    <input type="radio" onclick="evalUrl('{url:/ucenter/address_default/id/$item[id]/is_default/1}')" name="radio3" value="" data-am-ucheck >设为默认
+                </label>
+				{/if}
+                <a href="javascript:void(0);" onclick='editAddress({$item['id']})' class="editButton"><i class="icon iconfont icon-bianji"></i>&nbsp;编辑</a>
+                <a href="javascript:void(0);" link="{url:/ucenter/address_del/id/$item[id]}" class="deleteButton"><i class="icon iconfont icon-lajixiang-copy"></i>&nbsp;删除</a>
+            </div>
+        </li>
+        {/foreach}
+    </ul>
+    <a class="dizhiXinzeng" href="javascript:void(0);" onclick="editAddress();"><i class="icon iconfont icon-xinzeng"></i>&nbsp;&nbsp;新增收货地址</a>
+</div>
+<script>
+$(function(){
+	$(".footer_nav").hide();
+})
+</script>

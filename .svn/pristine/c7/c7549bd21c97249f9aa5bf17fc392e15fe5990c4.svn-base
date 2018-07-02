@@ -1,0 +1,30 @@
+<div id="pageInfo" data-title="确认支付"></div>
+
+<div id="main" style="padding-bottom: 0;">
+    <div class="orderZf">
+        <div class="ddxx">
+            <p>特派员订单</p>
+            <h1>￥<span>{$zongjine}</span></h1>
+        </div>
+        <div class="skf">
+            <label>收款方</label>
+            <span>北京特派急送科技有限公司</span>
+        </div>
+        {if:$pay_type == 1}
+        <form action='{url:/block/doPay/order_id/$oidstr}' method='post'>
+            <input type="submit" value="立即支付" class="btn_submit pink submitBtn" />
+        </form>
+        {else:}
+        <div class="butDiv">
+            <a href="{url:ucenter/index}">会员中心</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{url:ucenter/order}">订单列表</a>
+        </div>
+        {/if}
+    </div>
+</div>
+<script>
+$(function(){
+    // 隐藏底部导航
+    $(".footer_nav").hide();
+})
+</script>

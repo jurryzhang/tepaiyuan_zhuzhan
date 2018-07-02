@@ -1,0 +1,156 @@
+{js:artTemplate} {js:areaSelect} {js:my97date}
+
+<div id="content">
+    <div class="dw">
+        <div>
+            <i class="icon iconfont icon-dingwei"></i>
+            <select style="display:none;" name="province" child="city,area" class="input_select f3"></select>
+            <select style="display:none;" name="city" child="area" class="input_select f3"></select>
+            <select id="areaS" name="area" class="input_select f3"></select>
+        </div>
+        <div>
+            {foreach:items=$this->marketList $item=$v}
+            <a href="javascript:void(0);">{$v['name']}</a>
+            {/foreach}
+        </div>
+    </div>
+
+
+    <!-- <div class="dw">
+        <a href="">
+            <i class="icon iconfont icon-dingwei"></i>
+            <span>二七万达</span>
+            <i class="icon iconfont icon-icon-up"></i>
+        </a>
+    </div> -->
+    <div class="search">
+        <div class="search-show">
+            <i class="icon iconfont icon-search">搜索</i>
+        </div>
+        <div class="search-from" style="display:none;">
+            <form name="searchFrom" method="get" action="/index.php">
+                <input type="hidden" name="controller" value="site">
+                <input type="hidden" name="action" value="search_list">
+                <input class="keywords" type="text" name="word" autocomplete="off" placeholder="请输入关键词...">
+                <i class="icon iconfont icon-search" id="searchFrom"></i>
+            </form>
+        </div>
+    </div>
+    <div class="ban">
+        {echo:Ad::show("首页通栏100%*100(mobile)")}
+    </div>
+    <div class="column">
+        <ul>
+            <li>
+                <a href="{url:site/robuyon}">
+                    <i class="icon iconfont icon-APPtubiao-"></i><span>限时抢购</span>
+                </a>
+            </li>
+            <li>
+                <a href="{url:/ucenter/favorite}">
+                    <i class="icon iconfont icon-tuishuiqingdan"></i><span>常用清单</span>
+                </a>
+            </li>
+            <li>
+                <a href="hdzx.html">
+                    <i class="icon iconfont icon-icon-sendtype-2"></i><span>活动中心</span>
+                </a>
+            </li>
+            <li>
+                <a href="{url:/ucenter/order}">
+                    <i class="icon iconfont icon-dingdan"></i><span>我的订单</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="foodBox">
+        <div class="foodTitle" id="listShow">
+            <ul classShow="foodText ul" curClass="curLi">
+                {foreach:items=Api::run('getCategoryListTop','id asc') item=$item}
+                <li curId="{$item['id']}" class="{if:$key == 0}curLi{/if}" >
+                {$item['name']}
+                {if:$key==0}
+                {set:$showId=$item['id']}
+                {/if}
+                <div class="showid_{$item['id']}" style="display:none;">
+                    <ul>
+                        {foreach:items=Api::run('getCategoryExtendList',array('#categroy_id#',$item['id']),10,'id desc') item=$v}
+                        <li>
+                            <div class="foodPic">
+                                <a href="{url:/site/products/id/$v[id]}"><img src="{url:/pic/thumb/img/$v[img]}"></a>
+                            </div>
+                            <div class="foodJg">
+                                <a href="{url:/site/products/id/$v[id]}">
+                                    <h1>{$v['name']}</h1>
+                                    <h2>
+                                    <span>
+                                        ￥{$v['sell_price']}{if:$v['unit']!=''}/{$v['unit']}{/if}
+                                    </span> 
+                                    (3斤起送)
+                                    </h2>
+                                </a>
+                            </div>
+                            <button onclick="delCart_list({$v['id']});"><i class="icon iconfont icon-icon1460189759358"></i></button>
+                            <button onclick="joinCart_list({$v['id']});"><i class="icon iconfont icon-jia"></i></button>
+                            <!--<button onclick="joinCart_list({$v['id']});"><img src="{skin:images/gwc.png}"></button>-->
+                            <div class="clear"></div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+        <div class="foodText">
+            <ul>
+                {foreach:items=Api::run('getCategoryExtendList',array('#categroy_id#',$showId),10,'id desc') item=$v}
+                <li>
+                    <div class="foodPic">
+                        <a href="{url:/site/products/id/$v[id]}"><img src="{url:/pic/thumb/img/$v[img]}"></a>
+                    </div>
+                    <div class="foodJg">
+                        <a href="{url:/site/products/id/$v[id]}">
+                            <h1>{$v['name']}</h1>
+                            <h2>
+                                <span>
+                                    ￥{$v['sell_price']}{if:$v['unit']!=''}/{$v['unit']}{/if}
+                                </span> 
+                                (3斤起送)
+                            </h2>
+                        </a>
+                    </div>
+                    <button onclick="delCart_list({$v['id']});"><i class="icon iconfont icon-icon1460189759358"></i></button>
+                    <button onclick="joinCart_list({$v['id']});"><i class="icon iconfont icon-jia"></i></button>
+                    <!--<button onclick="joinCart_list({$v['id']});"><img src="{skin:images/gwc.png}"></button>-->
+                    <div class="clear"></div>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="memberArea" id="memberAreaUrl" value="{url:/ucenter/info}">
+<script type="text/javascript">
+$(function() {
+    // 设置首页导航为当前
+    $(".nav_home").addClass('cur');
+    var areaVal="{$this->memberRow['area']}";
+    if(!areaVal || areaVal==0)
+    {
+        var link=$('#memberAreaUrl').val();
+        var ok = 'window.location.href="'+link+'"';
+        window.confirm('请先设置您的所在区域',ok,function(){$(this).parent().parent().remove();});
+    }
+
+    //初始化地域联动
+    var areaInstance = new areaSelect('province');
+    {if:$this->memberRow}
+    areaInstance.init({"province":"{$this->memberRow['province']}","city":"{$this->memberRow['city']}","area":"{$this->memberRow['area']}"});
+    {else:}
+    areaInstance.init();
+    {/if}
+
+
+})
+</script>

@@ -1,0 +1,58 @@
+<div id="pageInfo" data-title="我的积分"></div>
+
+<div id="main" class="person_mian">
+    <div class="account_details curSelect" classShow="current">
+        <ul class="sel_type sel_type1">
+            <li class="current"><a>积分列表</a></li>
+            <li class=""><a>积分兑换</a></li>
+        </ul>
+        
+        <div class="type_box Box" style="display: block;">
+            {set:$queryPointLog = Api::run('getUcenterPointLog',$this->user['user_id'],$this->c_datetime)}
+            {set:$list = $queryPointLog->find()}
+            {if:$list}
+                {foreach:items = $list item=$a}
+                <div class="details_list">
+                     <div class="list1">
+                        <p>{$a['intro']}</p>
+                        <time>{echo:substr($a['datetime'],0,10)}</time>
+                     </div>
+                     <span>{$a['value']}</span>
+                </div>
+                {/foreach}
+            {else:}
+            <div class="emptyDiv">暂时没有积分记录</div>
+            {/if}
+        </div>
+        
+        
+        
+        <div class="type_box Box" style="display: none;">
+            <form action='{url:/ucenter/trade_ticket}' method='post'>
+                {set:$nowtime = ITime::getDateTime();$isHasTicket = false;}
+                <ul>
+                    {foreach:items=Api::run('getTicketList',array('#nowtime#',$nowtime),20) item=$v} {set:$isHasTicket = true;}
+                    <li>
+                        <label>
+                            <input type="radio" name='ticket_id' value="{$v['id']}">
+                            <span>{$v['name']}：{$v['value']}元（需要{$v['point']}积分）</span>
+                        </label>
+                        <p>有效日期：{echo:substr($v['start_time'],0,10)}至{echo:substr($v['end_time'],0,10)}</p>
+                    </li>
+                    {/foreach}
+                </ul>
+                <div class="btn_bottom">
+                    <div class="btn_tab">
+                        <label class="btn_tab_submit blue">兑换代金券<input type="submit"></label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>      
+</div>
+<script>
+$(function(){
+    $(".nav_user").addClass('cur');
+})
+</script>

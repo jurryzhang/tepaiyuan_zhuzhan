@@ -1,0 +1,65 @@
+<div id="pageInfo" data-title="商品搜索"></div>
+
+{set:$defaultWhere = array('search' => $this->word, 'category_extend' => $this->cat_id)}
+{set:$goodsObj = search_goods::find($defaultWhere,10);$resultData = $goodsObj->find();}
+{if:$resultData}
+<aside class="goods_sort">
+    {foreach:items=search_goods::getOrderType()}
+    <span class="sort_btn" onclick="gourl('{echo:search_goods::searchUrl(array('order','by'),array($key,search_goods::getOrderBy($key)))}')">{$item}</span>
+    {/foreach}
+</aside>
+<div id="orderBox">
+    <div class="contaniner fixed-contb">
+        <section class="list">
+            <ul class="wall">
+                {foreach:items=$resultData}
+                <li class="pic">
+                    <a href="{url:/site/products/id/$item[id]}">
+                      {set:$imgPath=Goods_Class::imgPath($item['img'],$item['img_pathtype']);echo $imgPath;}
+                        <!-- <img src="{url:/pic/thumb/img/$item[img]/w/200/h/200}" alt="{$item['name']}"> -->
+                        <p>{$item['name']}</p>
+                        <b>￥{$item['sell_price']}{if:$item['unit']!=''}/{$item['unit']}{/if}</b><del>￥{$item['market_price']}{if:$item['unit']!=''}/{$item['unit']}{/if}</del>
+                        <div class="collectbar">
+                            <label for="collect1" onselectstart="return false" class="label1"></label>
+                            <input type="checkbox" onclick="mycheck(1)" id="collect1">
+                        </div>
+                    </a>
+                </li>
+                {/foreach}
+            </ul>
+        </section>
+        <div class="kong" style="margin-bottom: 16%;"></div>
+    </div>
+</div>
+{$goodsObj->getPageBar()}
+{else:}
+<div class="emptyDiv">搜索结果为零</div>
+{/if}
+
+<script>
+$(function(){
+    // 切换导航样式
+    var order = getUrlParam("order");
+    var sortBtn = $(".goods_sort").children('.sort_btn');
+    // sortBtn.eq(2).append('<i>');
+    if(order=="sale"){
+        sortBtn.eq(0).addClass('on').append('<i class="icon-angle-down"></i>');
+    }else if (order=="sale_toggle"){
+        sortBtn.eq(0).addClass('on').append('<i class="icon-angle-up"></i>');
+    }else if (order=="cpoint"){
+        sortBtn.eq(1).addClass('on').append('<i class="icon-angle-down"></i>');
+    }else if(order=="cpoint_toggle"){
+        sortBtn.eq(1).addClass('on').append('<i class="icon-angle-up"></i>');
+    }else if(order=="price"){
+        sortBtn.eq(2).addClass('on').append('<i class="icon-angle-down"></i>');
+    }else if(order=="price_toggle"){
+        sortBtn.eq(2).addClass('on').append('<i class="icon-angle-up"></i>');
+    }else if(order=="new"){
+        sortBtn.eq(3).addClass('on').append('<i class="icon-angle-down"></i>');
+    }else if(order=="new_toggle"){
+        sortBtn.eq(3).addClass('on').append('<i class="icon-angle-up"></i>');
+    }else{
+        sortBtn.eq(0).addClass('on');
+    };
+});
+</script>

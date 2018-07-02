@@ -1,0 +1,117 @@
+<div id="pageInfo" data-title="购物车"></div>
+<!-- 购物车 开始 -->
+
+<div id="main">
+	<div class="cartNull no" {if:$this->count > 0}style="display:none;"{/if}>
+		<i class="icon iconfont icon-kong"></i>
+		<p>空空如也，快快去买</p>
+		<a href="{url:site/sitemap}">去购买</a>
+	</div>
+	{if:$this->count > 0}
+	<!--促销模板-->
+	<script type="text/html" id="promotionTemplate">
+		<li><%=item['plan']%>，<%=item['info']%></li>
+	</script>
+	
+	<div class="con">
+	
+		{foreach:items = $this->sellArr item=$v}
+	    <div class="content">
+	    	<div class="list">
+	    		<div class="fl">
+	    			<label>
+		    			<input type="checkbox" checked="checked">
+		    			<i class="icon iconfont icon-xuanzhong"></i>
+		    		</label>
+	    		</div>
+	    		<p>{$v['name']}</p>
+	    	</div>
+	    	<div class="yfsm" as="{$v['id']}">
+	    		<span>免运费</span>
+				<label>
+	    		{if:$this->promotion}
+	    		{foreach:items = $this->promotion[$v['id']] item=$val }
+	    		<p>{$val['info']}</p>
+	    		{/foreach}
+	    		{/if}
+				</label>
+	    		<a href="{url:/site/sitemap}">去凑单></a>
+	    		
+	    	</div>
+		    <ol ind="0" class="cart">
+		    	{foreach:items = $this->goodsList key=$goodsKey}
+		    	{if:$item['seller_id']==$v['id']}
+		    	<script>var item{$goodsKey} = {echo:JSON::encode($item)};</script>
+		    	<li class="clearfix">
+		    		<div class="label fl">
+		    			<label>
+			    			<input type="checkbox" checked="checked" Gid="{if:$item['product_id'] > 0}{$item['product_id']}{else:}{$item['goods_id']}{/if}" Gtype="{if:$item['product_id'] > 0}product{else:}goods{/if}">
+			    			<i class="icon iconfont icon-xuanzhong"></i>
+			    		</label>
+		    		</div>
+		    		<div class="img fl">
+		    			<img src="{url:/pic/thumb/img/$item[img]}" onclick="gourl('{url:/site/products/id/$item['goods_id']}')">
+		    		</div>
+		    		<div class="text fl">
+		    			<p class="overflow">{$item['name']}</p>
+		    			<p class="clearfix">
+		    				<span class="fl red">￥{$item['sell_price']}</span>
+		    				<span class="fr">
+		    					<span class="dianji" onclick='cart_reduce(item{$goodsKey});'>-</span>
+								<input class="number" type='text' onchange='cartCount(item{$goodsKey});' id="count_{$item['goods_id']}_{$item['product_id']}" value="{$item['count']}">
+								<span class="dianji" onclick='cart_increase(item{$goodsKey});'>+</span>
+
+
+		    				<!-- 	<input type="button" value="-" class="btn1">
+		    					<span class="number">1</span>
+		    					<input type="button" value="+" class="btn2"> -->
+		    				</span>
+		    			</p>
+		    		</div>
+		    	</li>
+		    	{/if}
+		    	{/foreach}
+		    </ol>
+		    <p class="total">本单总计：<span>￥{$v['sum']}</span></p>
+		    <!-- <p class="totyf">运费：<span>￥10.00</span></p> -->
+	    </div>
+		{/foreach} 
+	</div>
+
+
+
+
+
+
+	<!--结算-->
+	<div class="bottom fixed">
+		<div class="fl bottom-label">
+			<label>
+				<input type="checkbox" checked="checked"/>
+				<i class="icon iconfont icon-xuanzhong"></i>
+				全选
+			</label>
+		</div>
+		<div class="fr">
+			总计：<span>{$this->final_sum}</span>
+			<button id="jisuan" gourl="{url:/simple/cart2}" class="sett">结算</button>
+		</div>
+	</div>
+	 <!--结算-->
+	 <!--删除-->
+	<div class="bottom fixed" style="display: none;">
+		<div class="fr">
+			<button class="delete" gurl="{url:/simple/removeCart2}">删除</button>
+		</div>
+	</div>
+	 <!--删除-->
+	{/if}
+</div>
+<input type="hidden" id="joinCart" value="{url:/simple/joinCart}" />
+<input type="hidden" id="promotionRuleAjax" value="{url:/simple/promotionRuleAjax}" />
+<script type="text/javascript" src="{theme:javascript/cart.js}"></script>
+<script>
+$(function(){
+	$(".nav_cart").addClass('cur');
+})
+</script>

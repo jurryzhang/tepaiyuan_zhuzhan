@@ -1,0 +1,55 @@
+<div id="pageInfo" data-title="找回密码"></div>
+<style type="text/css">
+	.none{display: none;}
+</style>
+<div id="main">
+<div class="pro_top yz">
+		<dl style="margin-left: 12.5%;">
+			<dt><span></span></dt>
+			<dd>手机验证</dd>
+		</dl>
+		<dl>
+			<dt><span></span></dt>
+			<dd>输入新密码</dd>
+		</dl>
+		<dl>
+			<dt><span></span></dt>
+			<dd>修改成功</dd>
+		</dl>
+	</div>
+	<div class="yz_info">
+		<form action="{url:/simple/find_password_mobile}" method="post" id="mobileWay">
+			<div class="yz_info_con">
+				<span>手机号码</span>
+				<input type="text" name="mobile" id="mobile" value="" pattern="^[1][34578][0-9]{9}$"  alt="号码格式不正确" />
+			</div>
+			<div class="yz_info_con">
+				<span>验证码</span>
+				<input type="text" name="mobile_code" id="mobile_code" value="" size='10' placeholder="请输入验证码"/>
+				<b class="getcode" cishu="0" sendurl="{:url('Member/mobileSend')}" onclick="sendMessage()" >点击获取</b>
+			</div>
+			<input type="hidden" name="sep" value="1">
+			<button>下一步</button>
+		</form>
+	</div>
+</div>
+<script>
+$(function(){
+	$(".footer_nav").hide();
+	$(".footer_login").hide();
+})
+
+  //发送短信码
+function sendMessage(){
+	var mobile   = $('#mobileWay [name="mobile"]').val();
+	$.get("{url:/simple/send_message_mobile}",{"mobile":mobile},function(content){
+		if(content == 'success'){
+			alert('发送成功，请查看您的手机');
+		}
+		else{
+			alert(content);
+			return;
+		}
+	});
+}
+</script>

@@ -1,0 +1,16 @@
+<div id="pageInfo" data-title="操作成功！"></div>
+<style type="text/css">
+.nothing{
+	font-size: 17px;
+    margin-top: 50%;
+    text-align: center;
+}
+</style>
+<section class="nothing">
+    <i class="icon-ok green"></i>
+    <p class="green" style="font-size: 20px;line-height: 50px;">恭喜您,您已 {echo:IReq::get('message') ? IFilter::act(IReq::get('message'),'text') : '操作成功！'} 现在去?</p>
+    <div class="tips">
+        <a href="{url:/ucenter/index}">个人中心</a>
+        <a href="{url:/site/index}">网站首页</a>
+    </div>
+</section>

@@ -1,0 +1,17 @@
+{set:$msg = IReq::get('msg') ? IReq::get('msg') : '发生错误'}
+<div id="pageInfo" data-title="出错啦"></div>
+<style type="text/css">
+.nothing{
+	font-size: 17px;
+    margin-top: 50%;
+    text-align: center;
+}
+</style>
+<section class="nothing">
+    <i class="icon-remove red"></i>
+    <p class="red" style="font-size: 20px;line-height: 50px;">{echo:htmlspecialchars($msg,ENT_QUOTES)}</p>
+    <div class="tips">
+        <a href="{url:/ucenter/index}">个人中心</a>
+        <a href="{url:/site/index}">网站首页</a>
+    </div>
+</section>

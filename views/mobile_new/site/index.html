@@ -1,0 +1,228 @@
+<div id="content">
+    <div class="dw">
+        <div>
+            <i class="icon iconfont icon-dingwei"></i>
+            <span gurl="{url:/site/getMarket}" id="dingwei">
+            {if:$this->dingwei}
+            {$this->dingwei}
+            {else:}
+            请先定位
+            {/if}
+            </span>
+        </div>
+        <div>
+            <select name="marketlist" id="curMarket" curid="{$this->curMarketid}" gurl="{url:/site/selectMarket}">
+                <option value="0" selected>其他市场</option>
+                {if:$this->selectList}
+                {$this->selectList}
+                {/if}
+            </select>
+        </div>
+    </div>
+
+
+    <!-- <div class="dw">
+        <a href="">
+            <i class="icon iconfont icon-dingwei"></i>
+            <span>二七万达</span>
+            <i class="icon iconfont icon-icon-up"></i>
+        </a>
+    </div> -->
+    <div class="search">
+        <div class="search-show">
+            <i class="icon iconfont icon-search">搜索</i>
+        </div>
+        <div class="search-from" style="display:none;">
+            <form name="searchFrom" method="get" action="/index.php">
+                <input type="hidden" name="controller" value="site">
+                <input type="hidden" name="action" value="search_list">
+                <input class="keywords" type="text" name="word" autocomplete="off" placeholder="请输入关键词...">
+                <i class="icon iconfont icon-search" id="searchFrom"></i>
+            </form>
+        </div>
+    </div>
+    <div class="ban">
+        {echo:Ad::show("首页通栏100%*100(mobile)")}
+    </div>
+    <div class="column">
+        <ul>
+            <li>
+                <a href="{url:site/robuyon}">
+                    <i class="icon iconfont icon-APPtubiao-"></i><span>限时抢购</span>
+                </a>
+            </li>
+            <li>
+                <a href="{url:/ucenter/favorite}">
+                    <i class="icon iconfont icon-tuishuiqingdan"></i><span>常用清单</span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" id="active">
+                    <i class="icon iconfont icon-icon-sendtype-2"></i><span>活动中心</span>
+                </a>
+            </li>
+            <li>
+                <a href="{url:/ucenter/order}">
+                    <i class="icon iconfont icon-dingdan"></i><span>我的订单</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="foodBox">
+        <div class="foodTitle" id="listShow">
+            <ul classShow="foodText ul" curClass="curLi">
+                {foreach:items=Api::run('getCategoryListTop','id asc') item=$item}
+                <li curId="{$item['id']}" class="{if:$key == 0}curLi{/if}" >
+                {$item['name']}
+                {if:$key==0}
+                {set:$showId=$item['id']}
+                {/if}
+                <div class="showid_{$item['id']}" style="display:none;">
+                    {set:$cidStr=Goods_Class::topcatChildTree($item['id'],$_REQUEST['seller_id']);}
+                    {if:$this->curMarketid==0}
+                    {set:$list=Api::run('getCategoryExtendList',array('#categroy_id#',$cidStr),'id desc');}
+                    {else:}
+                    {set:$list=Api::run('getCategoryMarketList',array('#categroy_id#',$cidStr),array('#market_id#',$this->curMarketid),'id desc');}
+                    {/if}
+                    {if:$list}
+                    <ul>
+                        {foreach:items=$list item=$v}
+                        <li>
+                            <div class="foodPic">
+                                <a href="{url:/site/products/id/$v[id]}">
+                                {set:$imgPath=Goods_Class::imgPath($v['img'],$v['img_pathtype']);echo $imgPath;}
+                                </a>
+                            </div>
+                            <div class="foodJg">
+                                <a href="{url:/site/products/id/$v[id]}">
+                                    <h1>{$v['name']}</h1>
+                                    <h2>
+                                    <span>
+                                        ￥{$v['sell_price']}{if:$v['unit']!=''}/{$v['unit']}{/if}
+                                    </span>
+                                    </h2>
+                                </a>
+                            </div>
+                            <button onclick="joinCart_list({$v['id']});"><i class="icon iconfont icon-jiarugouwuche"></i></button>
+                            <div class="clear"></div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    {else:}
+                    <div class="empty">暂无数据</div>
+                    {/if}
+                </div>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+        <div class="foodText">
+            {set:$cidStr2=Goods_Class::topcatChildTree($showId,$_REQUEST['seller_id']);}
+            {if:$this->curMarketid==0}
+            {set:$firstL=Api::run('getCategoryExtendList',array('#categroy_id#',$cidStr2),'id desc');}
+            {else:}
+            {set:$firstL=Api::run('getCategoryMarketList',array('#categroy_id#',$cidStr2),array('#market_id#',$this->curMarketid),'id desc');}
+            {/if}
+
+            {if:$firstL}
+            <ul>
+                {foreach:items=$firstL item=$v}
+
+                <li>
+                    <div class="foodPic">
+                        <a as="{$v['img_pathtype']}" href="{url:/site/products/id/$v[id]}">
+                        {set:$imgPath=Goods_Class::imgPath($v['img'],$v['img_pathtype']);}
+                        {$imgPath}
+                        </a>
+                    </div>
+                    <div class="foodJg">
+                        <a href="{url:/site/products/id/$v[id]}">
+                            <h1>{$v['name']}</h1>
+                            <h2>
+                                <span>
+                                    ￥{$v['sell_price']}{if:$v['unit']!=''}/{$v['unit']}{/if}
+                                </span>
+                            </h2>
+                        </a>
+                    </div>
+                    <button onclick="joinCart_list({$v['id']});"><i class="icon iconfont icon-jiarugouwuche"></i></button>
+                    <div class="clear"></div>
+                </li>
+                {/foreach}
+            </ul>
+            {else:}
+            <div class="empty">暂无数据</div>
+            {/if}
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=g0OPrhSYBqORW9q4QdlomzUtqPYbbfG0"></script>
+<script type="text/javascript">
+$(function() {
+    // 设置首页导航为当前
+    $(".nav_home").addClass('cur');
+    var curMarketid="{$this->curMarketid}";
+    var getnum="{$this->getnum}";
+    if(curMarketid==0 && getnum==0)
+    {
+        getAddress();
+    }else{
+        $('#curMarket').val(curMarketid);
+    }
+    $('#active').on('click',function(){
+        alert('当前活动暂未开放！');
+    });
+
+
+    //定位当前位置并cookie
+    function getAddress()
+    {
+        var map = new BMap.Map();
+        var geolocation = new BMap.Geolocation();
+        var geoc = new BMap.Geocoder();
+        var url=document.getElementById("dingwei").getAttribute('gurl');
+        geolocation.getCurrentPosition(function(r){
+            if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                geoc.getLocation(r.point, function(rs){
+                    var addComp = rs.addressComponents;
+                    var locprovince=addComp.province;//省
+                    var loccity=addComp.city;//城市
+                    var locdistrict=addComp.district;//区县
+                    var locstreet=addComp.street;//街道
+                    var locstreetNumber=addComp.streetNumber;//街道编号
+                    var addressvalue=addComp.province+addComp.city+addComp.district+addComp.street+addComp.streetNumber;
+                    $.ajax({
+                        url : url,
+                        type : 'POST',
+                        data : {'province':locprovince,'city':loccity,'district':locdistrict,'street':locstreet,'address':addressvalue},
+                        dataType:"json",
+                        success : function(result){
+                            if(result.code==1)
+                            {
+                                alert(result.msg);
+                                location.reload();
+                            }else{
+                                alert(result.msg);
+                                document.getElementById("dingwei").innerHTML=locdistrict;
+
+                            }
+
+                            // if(result.code==1)
+                            // {
+                            //     document.getElementById("dingwei").innerHTML=result.dingwei;
+                            //     document.getElementById("curMarket").innerHTML='';
+                            //     document.getElementById("curMarket").innerHTML+=result.marketTemp;
+                            //     document.getElementById("curMarket").setAttribute('curid',result.curid);
+                            // }
+                        },
+                    })
+                });
+            }else {
+                alert('failed'+this.getStatus());
+            }
+        },{enableHighAccuracy: true})
+    }
+
+
+})
+</script>

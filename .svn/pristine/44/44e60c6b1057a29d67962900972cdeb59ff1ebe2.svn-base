@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <title>{echo:$this->_siteConfig->name}</title>
+    <link rel="stylesheet" type="text/css" href="{skin:style/iconfont.css}">
+    <link rel="stylesheet" type="text/css" href="{skin:style/index.css}">
+    <link rel="stylesheet" type="text/css" href="{skin:style/style.css}">
+    {js:jquery} {js:form} {js:validate} {js:dialog} {js:artTemplate}
+    <script src='{theme:javascript/mobile.js}'></script>
+    
+</head>
+<body>
+{if:IWeb::$app->getController()->getId() == 'site' && IWeb::$app->getController()->getAction()->getId() == 'index'}
+{elseif:IWeb::$app->getController()->getId() == 'ucenter' && IWeb::$app->getController()->getAction()->getId() == 'index'}
+{else:}
+<header id="header">
+
+    {if:IWeb::$app->getController()->getId() == 'ucenter' && (IWeb::$app->getController()->getAction()->getId() == 'order' || IWeb::$app->getController()->getAction()->getId() == 'account' || IWeb::$app->getController()->getAction()->getId() == 'info' || IWeb::$app->getController()->getAction()->getId() == 'password')}
+    <i class="icon iconfont icon-fanhui" onclick='gourl("{url:ucenter/index}")'></i> 
+    {else:}
+    <i class="icon iconfont icon-fanhui" onclick="self.location=document.referrer;"></i>
+    {/if}
+
+
+    <p class="title" id="page_title">{echo:$this->_siteConfig->name}</p>
+
+
+    {if:IWeb::$app->getController()->getId() == 'simple'}
+        {if:IWeb::$app->getController()->getAction()->getId() == 'cart'}
+            <span class="fr">编辑</span>
+        {elseif:IWeb::$app->getController()->getAction()->getId() == 'login'}
+            <span class="fr"><a href="{url:simple/regshow}">注册</a></span>
+        {elseif:IWeb::$app->getController()->getAction()->getId() == 'regshow'}
+            <a href="{url:simple/login}" class="dl">马上登录</a>
+        {else:}
+        {/if}
+    {elseif:IWeb::$app->getController()->getId() == 'ucenter'}
+        {if:IWeb::$app->getController()->getAction()->getId() == 'account' || IWeb::$app->getController()->getAction()->getId() == 'withdraw'}
+        <a href="{url:ucenter/account_log}" class="shuom">账户明细</a>
+        {/if}
+        {if:IWeb::$app->getController()->getAction()->getId() == 'address'}
+        <a href="{url:ucenter/index}" class="sousuo"><i class="icon iconfont icon-wode"></i></a>
+        {/if}
+        {if:IWeb::$app->getController()->getAction()->getId() == 'favorite'}
+        <a href="{url:site/search}" class="sousuo"><i class="icon iconfont icon-sousuo"></i></a>
+        {/if}
+        {if:IWeb::$app->getController()->getAction()->getId() == 'order_detail'}
+        <a href="{url:ucenter/index}" class="sousuo"><i class="icon iconfont icon-wode"></i></a>
+        {/if}
+    {elseif:IWeb::$app->getController()->getId() == 'site'}
+        {if:IWeb::$app->getController()->getAction()->getId() == 'search_list' || IWeb::$app->getController()->getAction()->getId() == 'robuyon' || IWeb::$app->getController()->getAction()->getId() == 'sitemap'}
+        <a href="{url:site/search}" class="sousuo"><i class="icon iconfont icon-sousuo"></i></a>
+        {/if}
+    {else:}
+        <a href="{url:site/search}" class="sousuo"><i class="icon iconfont icon-sousuo"></i></a>
+    {/if}
+
+
+</header>
+{/if}
+<!-- 引入内页 -->
+{viewcontent}
+<!-- 引入内页 end-->
+<footer id="footer" class="footer_nav">
+    <ul class="nav navb">
+        <li class="nav_home">
+            <a href="{url:/}">
+                <i class="icon iconfont icon-shouye"></i><span>首页</span>
+            </a>
+        </li>
+        <li class="nav_map">
+            <a href="{url:site/sitemap}">
+                <i class="icon iconfont icon-leimupinleifenleileibie2"></i><span>分类</span>
+            </a>
+        </li>
+        {set:$user_id = ISafe::get('user_id');}
+        {set:$carObj = new IModel('goods_car');}
+        {if:$user_id>0}
+        {set:$data = $carObj->getObj('user_id = '.$user_id);}
+        {/if}
+        {set:$count=0;}
+        {if:$data}
+        {set:$car = JSON::decode(str_replace(array('&','$'),array('"',','),$data['content']));}
+        {set: $goods = isset($car['goods'])?$car['goods']:[];}
+        {foreach:items=$goods}
+        {set:$count += $item;}
+        {/foreach}
+        {/if}
+        <li class="nav_cart">
+            <a href="{url:simple/cart}">
+                <i class="icon iconfont icon-gouwuche1" style="position: relative;">
+                    <b id="ii" style="font-size:0.11rem;width:0.15rem;height:0.15rem;line-height:0.16rem;text-align:center;border-radius:50%;background:#FF0000;position: absolute;right: -0.1rem;top: -0.06rem;color: #fff;">
+                        {set: echo $count;}
+                    </b>
+                </i>
+                <span>购物车</span>
+            </a>
+        </li>
+        <li class="nav_user">
+            <a href="{url:/ucenter/index}">
+                <i class="icon iconfont icon-wode"></i><span>我的</span>
+            </a>
+        </li>
+    </ul>
+</footer>
+</body>
+<script type="text/javascript" src="{theme:javascript/rem.js}"></script>
+<script type="text/javascript" src="{theme:javascript/swiper.min.js}"></script>
+<script type="text/javascript" src="{theme:javascript/script.js}"></script>
+<script type="text/javascript" src="{theme:javascript/site.js}"></script>
+</html>
+<script type="text/javascript">
+setInterval(function() {
+  $.ajax({
+    url: '/index.php?controller=ucenter&action=getCarCount',
+    type: 'GET',
+    data: {},
+    success: function (data) {
+      data = JSON.parse(data);
+      var p = document.getElementById('ii');
+      p.innerHTML = data.count;
+    }
+  });
+}, 5000);
+
+</script>

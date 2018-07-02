@@ -1,0 +1,65 @@
+<div id="pageInfo" data-title="全部订单"></div>
+
+<div id="orderBox">
+	<div class="contaniner fixed-conta">
+		<div class="orderQbList">
+			<ul as="{$status}" style="display:none;">
+				<li {if:$status==0}class="orderCur"{/if}><a href="{url:ucenter/order}">全部</a></li>
+				<li {if:$status==1}class="orderCur"{/if}><a href="{url:ucenter/order/sid/1}">待付款</a></li>
+				<li {if:$status==2}class="orderCur"{/if}><a href="{url:ucenter/order/sid/2}">待发货</a></li>
+				<li {if:$status==3}class="orderCur"{/if}><a href="{url:ucenter/order/sid/3}">待收货</a></li>
+				<li {if:$status==4}class="orderCur"{/if}><a href="{url:ucenter/order/sid/4}">待评价</a></li>
+			</ul>
+		</div>
+		<section class="orderQb">
+		{set:$user_id = $this->user['user_id']}
+	    {set:$queryOrderList = Api::run('getOrderMarketList',$user_id)}
+	    {set:$orderList = $queryOrderList->find()}
+	    {if:$orderList}
+		{foreach:items = $orderList}
+	    <dl>
+			<dt>
+				<time>{$item['add_time']}</time>
+				<span>{if:$item['market_id']==0}自营{else:}{$item['name']}{/if}</span>
+			</dt>
+			<ul>
+				{set:$orderid_str=$item['orderid_str']} {foreach:items=Api::run('getInOrderGoodsListByGoodsid',array('#orderid_str#',$orderid_str)) item=$good} {set:$good_info = JSON::decode($good['goods_array'])}
+				<a href="{url:/ucenter/order_detail/id/$item[id]}">
+					<figure><img src="{url:/pic/thumb/img/$good[img]}"/></figure>
+					<li>
+						<p>{$good_info['name']}</p>
+						<b>￥{$good['real_price']}</b>
+						<strong>×{$good['goods_nums']}</strong>
+					</li>
+				</a>
+				{/foreach}
+			</ul>
+			<dd>
+				<h3>总额</h3>
+				<span>￥{set:$amount=$item['order_amount']+$item['yunfei'];echo $amount;}{if:$item['yunfei']>0}(包含运费：{$item['yunfei']}){/if}</span>
+			</dd>
+			<dd>
+				<input type="button" value="查看详情" onclick='window.location.href="{url:/ucenter/order_detail/omid/$item[id]}"' />
+				{if:$item['status']==1}
+				{set:$oidstr=str_replace(',','_',$item['orderid_str']);}
+				<input class="order-que" type="button" value="立即付款" onclick="window.location.href='{url:/block/doPay/order_id/$oidstr}'" />
+				<input type="button" value="取消订单" onclick='window.location.href="{url:/ucenter/order_status2/omid/$item[id]/op/cancel}"' />
+				{/if}
+			</dd>
+		</dl>
+		{/foreach}
+		{$queryOrderList->getPageBar()}
+		<div style="margin-bottom: 60px;"></div>
+		{else:}
+	    <div class="emptyDiv">当前暂无数据</div>
+	    {/if}
+		</section>
+	</div>	
+</div>
+<script>
+$(function(){
+    $(".nav_user").addClass('cur');
+})
+</script>
+
+

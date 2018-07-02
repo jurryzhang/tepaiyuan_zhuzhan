@@ -1,0 +1,31 @@
+<div id="pageInfo" data-title="用户登录"></div>
+<div class="login">
+	<img src="{skin:images/bg.jpg}" class="bg">
+	<div class="logo">
+		<span>logo</span>
+	</div>
+	<div class="log">
+		<form action='{url:/simple/login_act}' method='post'>
+			<input type="hidden" name='callback' value="{$callback}" />
+			<ul>
+				<li>
+					<img src="{skin:images/user.png}">
+					<input type="text" class="input_text" placeholder="请输入用户名" initmsg="验证通过" name="login_info" id="login_info" value="{echo:ICookie::get('loginName');}" pattern='required' alt='填写用户名或邮箱' />
+					<div class="clear"></div>
+				</li>
+				<li>
+					<img src="{skin:images/psw.png}">
+					<input type="password" class="input_text" placeholder="密码" name="password" pattern='^\S{6,32}$' alt='填写密码' />
+					<div class="clear"></div>
+				</li>
+			</ul>
+			<button class="log-btn">登录</button>
+		</form>
+		<a href="{url:simple/find_password}" class="wjmm">忘记密码？</a>
+	</div>
+</div>
+<script>
+$(function(){
+	$(".footer_nav").hide();
+})
+</script>

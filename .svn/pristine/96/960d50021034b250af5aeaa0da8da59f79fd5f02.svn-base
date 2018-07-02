@@ -1,0 +1,65 @@
+{js:artTemplate} {js:areaSelect} {js:my97date}
+<div id="pageInfo" data-title="个人资料"></div>
+
+<div id="main" class="person_mian">
+	<div class="user_info">
+		<form action='{url:/ucenter/info_edit_act}' name='user_info' method="POST" role="form">
+			<ul>
+				<li>
+					<label style="line-height: 0.52rem;">头像</label>
+					<div class="tx_box">
+						<img class="uploadimg_show" src="{url:pic/thumb/img/$this->userRow['head_ico']}" />
+						<input class="imgupload" type="file" accept="image/*" lookid="{$this->userRow['id']}" shujubiao="freight" ziduan="uimg" saveurl="{url:ucenter/user_ico_ajaxUpload}" />
+					</div>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<label>邮箱</label>
+					<input type="text" name='email' class="input_text" value="{$this->memberRow['email']}" >
+					<div class="clear"></div>
+				</li>
+				<li>
+					<label>餐厅名</label>
+					<input type="text" name="seller_name" value="{$this->memberRow['seller_name']}" class="input_text" disabled="disabled">
+					<div class="clear"></div>
+				</li>
+				<li>
+					<label>负责人</label>
+					<input type="text" name="person_charge" value="{$this->memberRow['person_charge']}" class="input_text" disabled="disabled">
+					<div class="clear"></div>
+				</li>
+				<li>
+					<span class="input_item">餐厅地址</span>
+					<select name="province" child="city,area" class="input_select f3" disabled="disabled"></select>
+					<select name="city" child="area" class="input_select f3" disabled="disabled"></select>
+					<select name="area" class="input_select f3" disabled="disabled"></select>
+				</li>
+				<li>
+					<label>详细地址</label>
+					<input type="text" name='address' class="input_text" value="{$this->memberRow['address']}" disabled="disabled">
+					<div class="clear"></div>
+				</li>
+				<li>
+					<label>手机号</label>
+					<input type="text" name='mobile' class="input_text" value="{$this->memberRow['mobile']}" disabled="disabled">
+					<div class="clear"></div>
+				</li>
+
+			</ul>
+			<button class="submitBtn submit">确定</button>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+//DOM加载完毕
+$(function(){
+	$(".nav_user").addClass('cur');
+	//初始化地域联动
+	var areaInstance = new areaSelect('province');
+	{if:$this->memberRow}
+	areaInstance.init({"province":"{$this->memberRow['province']}","city":"{$this->memberRow['city']}","area":"{$this->memberRow['area']}"});
+	{else:}
+	areaInstance.init();
+	{/if}
+});
+</script>

@@ -1,0 +1,65 @@
+<div id="pageInfo" data-title="确认支付"></div>
+
+<div id="main" style="padding-bottom: 0;">
+    <div class="orderZf">
+        <div class="ddxx">
+            <p>特派员订单</p>
+            <h1>￥<span>{$this->final_sum}</span></h1>
+        </div>
+        <div class="skf">
+            <label>收款方</label>
+            <span>北京特派急送科技有限公司</span>
+        </div>
+        <div style="display:none;">
+            <div class="skf">
+                <label>订单编号</label>
+                <span>{$this->order_num}</span>
+            </div>
+            <div class="skf">
+                <label>备货时间</label>
+                <span>{$this->stockup_time}天</span>
+            </div>
+            <div class="skf">
+                <label>支付方式</label>
+                <span>{$this->payment}</span>
+            </div>
+            <div class="skf">
+                <label>配送方式</label>
+                <span>{$this->delivery}</span>
+            </div>
+            <div class="skf">
+                <label>收货人名</label>
+                <span>{$accept_name}</span>
+            </div>
+            <div class="skf">
+                <label>联系方式</label>
+                <span>{$mobile}</span>
+            </div>
+            <div class="skf">
+                <label>收货时间</label>
+                <span>{$accept_time}</span>
+            </div>
+            <div class="skf">
+                <label>发票抬头</label>
+                <span>{$this->tax_title}</span>
+            </div>
+        </div>
+        
+        {if:$this->deliveryType != 1 && $this->paymentType == 1} {set:$tmpId=$this->order_id;}
+        <form action='{url:/block/doPay/order_id/$tmpId}' method='post'>
+            <input type="submit" value="立即支付" class="btn_submit pink submitBtn" />
+        </form>
+        {else:}
+        <div class="butDiv">
+            <a href="{url:ucenter/index}">会员中心</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{url:ucenter/order}">订单列表</a>
+        </div>
+        {/if}
+    </div>
+</div>
+<script>
+$(function(){
+    // 隐藏底部导航
+    $(".footer_nav").hide();
+})
+</script>

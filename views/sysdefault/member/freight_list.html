@@ -1,0 +1,115 @@
+<div class="headbar">
+	<div class="position">
+		<span>会员</span><span>></span><span>派送员管理</span><span>></span><span>派送员列表</span>
+	</div>
+	<div class="operating">
+		<div class="search f_l">
+			<form name="searchseller" action="{url:/}" method="get">
+				<input type='hidden' name='controller' value='member' />
+				<input type='hidden' name='action' value='freight_list' />
+				<select class="auto" name="search[like]">
+					<option value="name">姓名</option>
+					<option value="plate_num">车牌号</option>
+					<option value="travel_num">行驶证号</option>
+					<option value="telphone">手机</option>
+					<option value="landline">座机</option>
+					<option value="carload">载重</option>
+				</select>
+				<input class="small" name="search[likeValue]" type="text" value="" />
+				<button class="btn" type="submit"><span class="sch">搜 索</span></button>
+			</form>
+		</div>
+		
+	</div>
+</div>
+
+<form method="post" name="seller_list" >
+	<div class="content">
+		<table class="list_table">
+			<colgroup>
+				<col width="40px" />
+				<col width="140px" />
+				<col width="140px" />
+				<col width="100px" />
+				<col width="110px" />
+				<col width="70px" />
+				<col width="80px" />
+				<col width="80px" />
+				<col width="80px" />
+				<col width="150px"/>
+				<col width="80px" />
+				<col width="80px" />
+			</colgroup>
+
+			<thead>
+				<tr>
+					<th>选择</th>
+					<th>姓名</th>
+					<th>座机</th>
+					<th>移动电话</th>
+					<th>车牌号</th>
+					<th>行驶证号</th>
+					<th>载重</th>
+					<th>余额</th>
+					<th>押金</th>
+					<th>状态</th>
+					<th>注册日期</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+				{set:$where = Util::search(IReq::get('search'));}
+				{query:name=freight where=is_del eq 0 and $where order=id desc page=$page pagesize=20}
+				<tr>
+					<td><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
+					<td title="{echo:htmlspecialchars($item['name'])}">{$item['name']}</td>
+					<td title="{echo:htmlspecialchars($item['landline'])}">{$item['landline']}</td>
+					<td title="{echo:htmlspecialchars($item['telphone'])}">{$item['telphone']}</td>
+					<td title="{echo:htmlspecialchars($item['plate_num'])}">{$item['plate_num']}</td>
+					<td title="{echo:htmlspecialchars($item['travel_num'])}">{$item['travel_num']}</td>
+					<td title="{echo:htmlspecialchars($item['carload'])}">{$item['carload']}</td>
+					<td title="{echo:htmlspecialchars($item['amount'])}">{$item['amount']}</td>
+					<td title="{echo:htmlspecialchars($item['yajin'])}">{$item['yajin']}</td>
+					
+					<td>
+						<select onchange="changeStatus({$item['id']},this)">
+							<option value="0" {if:$item['status'] == 0}selected="selected"{/if}>禁用</option>
+							<option value="1" {if:$item['status'] == 1}selected="selected"{/if}>正常</option>
+							<option value="2" {if:$item['status'] == 2}selected="selected"{/if}>供应信息完成</option>
+							<option value="3" {if:$item['status'] == 3}selected="selected"{/if}>手机实名验证通过</option>
+							<!-- <option value="4" {if:$item['status'] == 4}selected="selected"{/if}>提交押金</option>
+							<option value="5" {if:$item['status'] == 5}selected="selected"{/if}>待审核</option> -->
+						</select>
+					</td>
+					<td title="{$item['reg_time']}">{$item['reg_time']}</td>
+					<td>
+						<a href="{url:/member/freight_edit/id/$item[id]}">查看信息</a>
+					</td>
+				</tr>
+				{/query}
+			</tbody>
+		</table>
+	</div>
+	{$query->getPageBar()}
+</form>
+
+<script language="javascript">
+//预加载
+$(function(){
+	var searchData = {echo:JSON::encode(IReq::get('search'))};
+	console.log(searchData);
+	for(var index in searchData)
+	{
+		$('[name="search['+index+']"]').val(searchData[index]);
+	}
+})
+
+//商户状态修改
+function changeStatus(sid,obj)
+{
+	var lockVal = obj.value;
+	$.getJSON("{url:/member/ajax_freight_lock}",{"id":sid,"lock":lockVal});
+}
+</script>

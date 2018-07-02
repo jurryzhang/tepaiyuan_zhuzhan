@@ -1,0 +1,87 @@
+<div id="pageInfo" data-title="分类"></div>
+<!--分类信息 开始-->
+
+
+
+<div id="main">
+	<div class="sort">
+		<aside>
+		    <div class="menu-left scrollbar-none" id="listShow">
+			    <ul classShow="classListUl" curClass="curS">
+			        <li class="curS" curId="0" >
+			        	<span>爆</span>本期推荐
+			        	<div class="showid_0" style="display:none;">
+			        		{foreach:items=Api::run('getCommendHot','id desc') item=$v}
+	                        <div class="classList">
+						      	<a href="{url:/site/products/id/$v[id]}">
+						      		<div class="sortr-l">
+						      			<img src="{url:/pic/thumb/img/$v[img]}">
+						      		</div>
+						      		<div class="sortr-r">
+						      			<h1>{$v['name']}</h1>
+						      			<p><span>￥{$v['sell_price']}</span>
+						      				{if:$v['unit']}/{$v['unit']}{/if}
+						      			</p>
+						      			<button><i class="icon iconfont icon-jiarugouwuche"></i></button>
+						      		</div>
+						      	</a> 
+						    </div> 
+	                        {/foreach}
+			        	</div>
+			        </li>
+			        {foreach:items=Api::run('getCategoryListTop') item=$first }
+			        <li curId="{$first['id']}">
+			        	{$first['name']}
+						<div class="showid_{$first['id']}" style="display:none;">
+							{foreach:items=Api::run('getCategoryExtendList',array('#categroy_id#',$first['id']),'id desc') item=$v}
+							<div class="classList">
+						      	<a href="{url:/site/products/id/$v[id]}">
+						      		<div class="sortr-l">
+						      			<img src="{url:/pic/thumb/img/$v[img]}">
+						      		</div>
+						      		<div class="sortr-r">
+						      			<h1>{$v['name']}</h1>
+						      			<p><span>￥{$v['sell_price']}</span>
+						      				{if:$v['unit']}/{$v['unit']}{/if}
+						      			</p>
+						      			<button><i class="icon iconfont icon-jiarugouwuche"></i></button>
+						      		</div>
+						      	</a> 
+						    </div> 
+	                        {/foreach}
+                        </div>
+			        </li>
+					{/foreach}
+			    </ul>
+		    </div>
+		</aside>
+		<section class="menu-right padding-all j-content">
+			<div class="mene-right-ban">
+				{echo:Ad::show("分类页推荐100%*79(mobile)")}
+			</div>
+		    <div class="classListUl">
+				{foreach:items=Api::run('getCommendHot','id desc') item=$v}
+		    		<div class="classList">
+				      	<a href="{url:/site/products/id/$v[id]}">
+				      		<div class="sortr-l">
+				      			<img src="{url:/pic/thumb/img/$v[img]}">
+				      		</div>
+				      		<div class="sortr-r">
+				      			<h1>{$v['name']}</h1>
+				      			<p><span>￥{$v['sell_price']}</span>
+				      				{if:$v['unit']}/{$v['unit']}{/if}
+				      			</p>
+				      			<button><i class="icon iconfont icon-jiarugouwuche"></i></button>
+				      		</div>
+				      	</a> 
+				    </div>  
+                {/foreach}
+		    </div>
+		</section>
+	</div>	
+</div>
+<script>
+$(function(){
+	$(".nav_map").addClass('cur');
+})
+</script>

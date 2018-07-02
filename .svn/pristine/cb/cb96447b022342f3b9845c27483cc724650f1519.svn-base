@@ -1,0 +1,17 @@
+<div id="pageInfo" data-title="用户注册"></div>
+
+<div class="reg">
+	<h1>注册</h1>
+	<p>注册成为特派员的一员，<br/>马上提高工作效益设收益。</p>
+	<ul>
+		<li>
+			<a href="{url:simple/reg}">餐厅</a>
+		</li>
+		<li>
+			<a href="http://122.114.167.29:805/index.php/gys/user/reg.html">供应商</a>
+		</li>
+		<li>
+			<a href="http://122.114.167.29:805/index.php/index/member/reg.html">派送员</a>
+		</li>
+	</ul>
+</div>

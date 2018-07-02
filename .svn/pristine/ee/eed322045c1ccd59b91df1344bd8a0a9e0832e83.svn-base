@@ -1,0 +1,114 @@
+{js:artTemplate}
+{js:areaSelect}
+<style type="text/css">
+.imgShow{
+	float: left;
+    width: 100px;
+    text-align: center;
+}
+.imgShow img{
+    width: 80px;
+    display: block;
+    margin: 0 auto;
+}
+.imgShow span{
+
+}
+</style>
+
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>派送员管理</span><span>></span><span>编辑商户</span></div>
+</div>
+
+<div class="content_box">
+	<div class="content form_content">
+		<form  method="post" name="sellerForm" enctype='multipart/form-data'>
+			<input name="id" value="" type="hidden" />
+
+			<table class="form_table">
+				<colgroup>
+					<col width="150px" />
+					<col />
+				</colgroup>
+
+				<tbody>
+					<tr>
+						<th>姓名：</th>
+						<td>{$this->freightRow['name']}</td>
+					</tr>
+					<tr>
+						<th>车牌号：</th>
+						<td>{$this->freightRow['plate_num']}</td>
+					</tr>
+					<tr>
+						<th>驾驶员信息：</th>
+						<td>{$this->freightRow['drive_info']}</td>
+					</tr>
+					<tr>
+						<th>驾驶证号：</th>
+						<td>{$this->freightRow['travel_num']}</td>
+					</tr>
+					<tr>
+						<th>手机号：</th>
+						<td>{$this->freightRow['telphone']}</td>
+					</tr>
+					<tr>
+						<th>座机号：</th>
+						<td>{$this->freightRow['landline']}</td>
+					</tr>
+					<tr>
+						<th>载重：</th>
+						<td>{$this->freightRow['carload']}</td>
+					</tr>
+					<tr>
+						<th>当前余额：</th>
+						<td>{$this->freightRow['amount']}</td>
+					</tr>
+					<tr>
+						<th>押金：</th>
+						<td>{$this->freightRow['yajin']}</td>
+					</tr>
+					<tr>
+						<th>注册时间：</th>
+						<td>{$this->freightRow['reg_time']}</td>
+					</tr>
+					<tr>
+						<th>商户资质材料：</th>
+						<td>
+							{if:isset($this->freightRow['paper_img']) && $this->freightRow['paper_img']}
+							<div class="imgShow">{set:$imgPath=Goods_Class::imgPath($this->freightRow['paper_img'],1);echo $imgPath;}<span>营业执照</span>
+							{/if}
+							{if:isset($this->freightRow['certif_img']) && $this->freightRow['certif_img']}
+							<div class="imgShow">{set:$imgPath=Goods_Class::imgPath($this->freightRow['certif_img'],1);echo $imgPath;}<span>卫生许可证</span></div>
+							{/if}
+							{if:isset($this->freightRow['carinfo_img']) && $this->freightRow['carinfo_img']}
+							<div class="imgShow">{set:$imgPath=Goods_Class::imgPath($this->freightRow['carinfo_img'],1);echo $imgPath;}<span>营业场所外部照片</span></div>
+							{/if}
+						</td>
+					</tr>
+					<tr>
+						<th>地区：</th>
+						<td>
+							<select name="province" child="city,area"></select>
+							<select name="city" child="area"></select>
+							<select name="area"></select>
+						</td>
+					</tr>
+					<tr>
+						<th>详细地址：</th><td>{$this->freightRow['address']}</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script language="javascript">
+//DOM加载完毕
+$(function()
+{
+//地区联动插件
+var areaInstance = new areaSelect('province');
+areaInstance.init({echo:JSON::encode($this->freightRow)});
+});
+</script>

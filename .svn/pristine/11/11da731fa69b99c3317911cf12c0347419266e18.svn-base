@@ -1,0 +1,148 @@
+<div id="pageInfo" data-title="个人中心"></div>
+
+<div id="userBox">
+    <div class="p-top  clearfloat">
+        <a href="{url:ucenter/info}">
+            <div class="tu">
+                {if:$this->user['head_ico']==''}
+                <img src="{skin:images/touxiang.png}"/>
+                {else:}
+                <img src="{url:pic/thumb/img/$this->user['head_ico']}"/>
+                {/if}
+            </div>
+            <p class="name">{$this->user['username']}</p>
+        </a>
+    </div>
+    <div class="contaniner fixed-contb">
+        <section class="self">
+            <dl>
+                <dt>
+                    <img src="{skin:images/user_qb.png}"/>
+                    <b>我的钱包</b>
+                </dt>
+                <dd>
+                    <ul>
+                        <li>
+                            <a href="{url:/ucenter/account}">
+                                <p class="red">￥{$user['balance']}</p>
+                                <p>余额</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{url:/ucenter/integral}">
+                                <p class="red">{$user['point']}</p>
+                                <p>积分</p>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{url:/ucenter/redpacket}">
+                                <p class="red">{$propData['prop_num']}张</p>
+                                <p>代金券</p>
+                            </a>
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+            <dl style="margin-top: 0.14rem;">
+                <dt>
+                    <a href="{url:/ucenter/order}">
+                        <img src="{skin:images/self-icon.png}"/>
+                        <b>全部订单</b>
+                        <span><i class="icon iconfont icon-jiantou-copy"></i></span>
+                    </a>
+                </dt>
+                <dd>
+                        <ul>
+                            <li>
+                                <a href="{url:ucenter/order/sid/1}">
+                                    <i class="icon iconfont icon-daifukuan"></i>
+                                    <p>待付款</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{url:ucenter/order/sid/2}">
+                                    <i class="icon iconfont icon-iconfontdaifahuo01"></i>
+                                    <p>待发货</p>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{url:ucenter/order/sid/3}">
+                                    <i class="icon iconfont icon-daishouhuo"></i>
+                                    <p>待收货</p>
+                                </a>
+                            </li>
+                        </ul>
+                </dd>
+            </dl>
+            <ul class="self-icon">
+                <li>
+                    <a href="{url:/ucenter/info}">
+                        <img src="{skin:images/self-icon01.png}"/>
+                        <p>个人信息</p>
+                        <span><i class="icon iconfont icon-jiantou-copy"></i></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{url:/ucenter/favorite}">
+                        <img src="{skin:images/self-icon02.png}"/>
+                        <p>常用清单</p>
+                        <span><i class="icon iconfont icon-jiantou-copy"></i></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{url:/ucenter/address}">
+                        <img src="{skin:images/self-icon04.png}"/>
+                        <p>地址管理</p>
+                        <span><i class="icon iconfont icon-jiantou-copy"></i></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{url:/ucenter/refunds}">
+                        <img src="{skin:images/self-icon05.png}"/>
+                        <p>退款管理</p>
+                        <span><i class="icon iconfont icon-jiantou-copy"></i></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{url:/ucenter/return_goods}">
+                        <img src="{skin:images/self-icon07.png}"/>
+                        <p>退货退款</p>
+                        <span><i class="icon iconfont icon-jiantou-copy"></i></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{url:/ucenter/evaluation}">
+                        <img src="{skin:images/self-icon06.png}"/>
+                        <p>评论管理</p>
+                        <span><i class="icon iconfont icon-jiantou-copy"></i></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{url:/ucenter/password}">
+                        <img src="{skin:images/self-icon011.png}"/>
+                        <p>修改密码</p>
+                        <span><i class="icon iconfont icon-jiantou-copy"></i></span>
+                    </a>
+                </li>
+            </ul>
+
+            <a href="{url:/simple/logout}"><input type="button" value="退出" /></a>
+
+        </section>
+
+
+    </div>
+
+</div>
+<script>
+$(function(){
+    $(".nav_user").addClass('cur');
+})
+</script>
+
+
+
+
+
