@@ -1,3 +1,0 @@
-@import "simple/cart";
-@import "simple/findpassword";
-@import "simple/login";
